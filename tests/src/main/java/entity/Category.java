@@ -1,9 +1,9 @@
 package entity;
 
 public class Category {
-    public String name;
-    public double startLevel;
-    public double endLevel;
+    private String name;
+    private double startLevel;
+    private double endLevel;
 
     public String getName() {
         return name;

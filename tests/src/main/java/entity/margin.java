@@ -1,8 +1,8 @@
 package entity;
 
 public class margin {
-    public String name;
-    public double percent;
+    private String name;
+    private double percent;
 
     public margin(String name) {
         this.name = name;
