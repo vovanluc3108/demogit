@@ -1,53 +1,65 @@
-use homework;
+create database testMySQL;
+use testMySQL;
 
-create table student(
-id	int not null primary key auto_increment,
-fullname char(255),
-birthday date,
-address char(255),
-isDelete boolean
+CREATE TABLE student (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    fullname VARCHAR(100) NOT NULL,
+    birthday DATE,
+    address VARCHAR(100),
+    isDelete BOOLEAN NOT NULL DEFAULT 0
 );
 
-create table class(
-id int not null primary key auto_increment,
-classname char(100),
-startyear year,
-type char(25),
-isDelete boolean
+CREATE TABLE class (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    classname VARCHAR(100),
+    startyear YEAR,
+    type VARCHAR(100),
+    isDelete BOOLEAN NOT NULL DEFAULT 0
+);
+CREATE TABLE student_class (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    std_id INT NOT NULL,
+    class_id INT NOT NULL,
+    isDelete BOOLEAN NOT NULL DEFAULT 0,
+    FOREIGN KEY (std_id)
+        REFERENCES student (id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (class_id)
+        REFERENCES class (id)
+        ON DELETE CASCADE
+);
+CREATE TABLE sub (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    sub_name VARCHAR(100) NOT NULL,
+    note VARCHAR(100),
+    isDelete BOOLEAN NOT NULL DEFAULT 0
 );
 
-create table subject(
-id int not null primary key auto_increment,
-subject_name char(25),
-note char(255),
-isDelete boolean
+CREATE TABLE class_subject (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    class_id INT NOT NULL,
+    sub_id INT NOT NULL,
+    isDelete BOOLEAN NOT NULL DEFAULT 0,
+    FOREIGN KEY (class_id)
+        REFERENCES class (id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (sub_id)
+        REFERENCES sub (id)
+        ON DELETE CASCADE
 );
 
-create table student_class(
-id int not null primary key auto_increment,
-id_student int,
-foreign key (id_student) references student(id) on delete cascade,
-id_class int,
-foreign key(id_class) references class(id) on delete cascade,
-isDelete boolean
+CREATE TABLE student_sub (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    std_id INT NOT NULL,
+    sub_id INT NOT NULL,
+    sub_point DOUBLE NOT NULL,
+    test_no INT NOT NULL,
+    isDelete BOOLEAN NOT NULL DEFAULT 0,
+    FOREIGN KEY (std_id)
+        REFERENCES student (id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (sub_id)
+        REFERENCES sub (id)
+        ON DELETE CASCADE
 );
 
-create table student_subject(
-id int not null primary key auto_increment,
-id_student int,
-foreign key (id_student)references student(id) on delete cascade,
-subject_id int,
-foreign key (subject_id) references subject(id) on delete cascade,
-point int,
-test_no int,
-isDelete boolean
-);
-
-create table class_subject(
-id  int not null primary key auto_increment,
-id_class int,
-foreign key (id_class) references class(id) on delete cascade,
-subject_id int,
-foreign key (subject_id) references subject(id) on delete cascade,
-isDelete boolean
-);
