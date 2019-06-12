@@ -337,7 +337,120 @@ from
     Worker
 group by DEPARTMENT;
 
+-- Q-42
+select 
+    *
+from
+    Worker
+where
+    WORKER_ID = (select 
+            max(WORKER_ID)
+        from
+            Worker);
 
+select * from Worker order by WORKER_ID DESC limit 1;
+-- Q-43
+select 
+    *
+from
+    Worker
+where
+    WORKER_ID = (select 
+            min(WORKER_ID)
+        from
+            Worker);
+            
+select * from Worker limit 1;
 
+-- Q-44
+select 
+    *
+from
+    Worker
+where
+    WORKER_ID <= 5 
+union select 
+    *
+from
+    (select 
+        *
+    from
+        Worker W
+    order by W.WORKER_ID DESC) AS W1
+WHERE
+    W1.WORKER_ID <= 5;
+
+select * from Worker order by WORKER_ID  limit 5;
+
+-- Q-45
+
+SELECT 
+    w.DEPARTMENT, w.FIRST_NAME, w.Salary
+from
+    (SELECT 
+        max(Salary) as TotalSalary, DEPARTMENT
+    from
+        Worker
+    group by DEPARTMENT) as TempNew
+        Inner Join
+    Worker w ON TempNew.DEPARTMENT = w.DEPARTMENT
+        and TempNew.TotalSalary = w.Salary;
+        
+-- Q-46
+
+SELECT distinct
+    Salary
+from
+    worker a
+WHERE
+    3 >= (SELECT 
+            count(distinct Salary)
+        from
+            worker b
+        WHERE
+            a.Salary <= b.Salary)
+order by a.Salary desc;
+
+select distinct SALARY from worker order by SALARY DESC limit 3;
+
+-- Q-47 
+
+select distinct
+    salary
+from
+    worker a
+where
+    3 >= (select 
+            count(distinct SALARY)
+        from
+            Worker w1
+        where
+           a.salary >= w1.SALARY)
+order by a.salary desc;
+
+select distinct SAlARY from worker order by salary asc limit 3; 
+
+-- Q- 48
+
+select distinct
+    salary
+from
+    worker a
+where
+    n >= (select 
+            count(distinct SALARY)
+        from
+            Worker w1
+        where
+           a.salary >= w1.SALARY)
+order by a.salary desc ;
+
+select distinct SAlARY from worker order by salary asc limit n; 
+
+-- Q-49
+SELECT DEPARTMENT, sum(Salary) Total_Salary from worker group by DEPARTMENT;
+
+-- Q-50
+SELECT FIRST_NAME, SALARY from Worker WHERE SALARY=(SELECT max(SALARY) from Worker);
 
 
